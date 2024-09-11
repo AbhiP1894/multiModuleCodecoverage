@@ -6,5 +6,5 @@ target/
 .project
 .settings
 *.versionsBackup
-.scannerwork
+.scannerwork/
 .properties
