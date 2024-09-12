@@ -18,16 +18,16 @@ public class AppTest {
      assertEquals(-4.0, calculator.subtract(-2.0, 2.0), 0);
  }
 
- //@Test
- //public void testMultiplication() {
-   //  assertEquals(6.0, calculator.multiply(2.0, 3.0), 0);
-     //assertEquals(-4.0, calculator.multiply(-2.0, 2.0), 0);
- //}
+ @Test
+ public void testMultiplication() {
+     assertEquals(6.0, calculator.multiply(2.0, 3.0), 0);
+     assertEquals(-4.0, calculator.multiply(-2.0, 2.0), 0);
+ }
 
-//@Test
- //public void testDivision() {
-   //  assertEquals(2.0, calculator.divide(6.0, 3.0), 0);
- //}
+@Test
+ public void testDivision() {
+     assertEquals(2.0, calculator.divide(6.0, 3.0), 0);
+ }
 
 @Test(expected = IllegalArgumentException.class)
  public void testDivisionByZero() {
