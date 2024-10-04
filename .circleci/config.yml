@@ -55,7 +55,7 @@ jobs:
             echo "Collected code coverage reports:"
             ls -R /tmp/code-coverage
             
-      - store_coverage_results:
+      - store_test_results:
           path: /tmp/code-coverage
 
       - store_artifacts:
