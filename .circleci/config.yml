@@ -21,7 +21,10 @@ jobs:
           name: Collect surefire reports
           command: |
             mkdir -p /tmp/test-results
+            echo "Finding surefire reports..."
             find . -type d -name surefire-reports -exec cp -r {} /tmp/test-results/ \;
+            echo "Collected reports:"
+            ls -R /tmp/test-results
       - run:
           name: List test reports for debugging
           command: ls -R /tmp/test-results
