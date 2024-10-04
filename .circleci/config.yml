@@ -17,6 +17,7 @@ jobs:
       - run:
           command: mvn verify
 
+#added extra steps for multimodule 
       - run:
           name: Collect surefire reports
           command: |
@@ -30,6 +31,8 @@ jobs:
           command: ls -R /tmp/test-results
       - store_test_results:
           path: /tmp/test-results
+
+
 
       - save_cache:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
