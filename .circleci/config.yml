@@ -30,19 +30,23 @@ jobs:
       - run:
           name: List test reports for debugging
           command: ls -R /tmp/test-results
-      
+
       - store_test_results:
           path: /tmp/test-results
 
-      # Store artifacts
+      # Store code coverage reports
+      - run:
+          name: Collect Code Coverage Reports
+          command: |
+            mkdir -p /tmp/code-coverage
+            echo "Finding code coverage reports..."
+            find . -type d -name "jacoco-report" -exec cp -r {} /tmp/code-coverage/ \; || true
+            echo "Collected code coverage reports:"
+            ls -R /tmp/code-coverage
+
       - store_artifacts:
-          path: /tmp/test-results  # Store the collected test results
-          destination: test-results # Optional destination name in CircleCI
-      
-      # Uncomment the following line if you want to store additional artifacts
-      # - store_artifacts:
-      #     path: /tmp/artifacts
-      #     destination: additional-artifacts  # Optional destination name in CircleCI
+          path: /tmp/code-coverage  # Store the collected code coverage results
+          destination: code-coverage  # Optional destination name in CircleCI
 
       - save_cache:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
