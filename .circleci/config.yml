@@ -1,20 +1,26 @@
 # This config was automatically generated from your source code
 # Stacks detected: deps:java:.
 version: 2.1
+
 jobs:
   test-java:
     docker:
       - image: cimg/openjdk:17.0
+
     steps:
       - checkout
+      
       - run:
           name: Calculate cache key
           command: |-
             find . -name 'pom.xml' -o -name 'gradlew*' -o -name '*.gradle*' | \
                     sort | xargs cat > /tmp/CIRCLECI_CACHE_KEY
+
       - restore_cache:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
+
       - run:
+          name: Run Tests
           command: mvn verify
 
       # Collect surefire reports for multi-module project
@@ -23,27 +29,23 @@ jobs:
           command: |
             mkdir -p /tmp/test-results
             echo "Finding surefire reports..."
-            find . -type d -name surefire-reports -exec cp -r {} /tmp/test-results/ \;
+            find . -type d -name surefire-reports -exec cp -r {} /tmp/test-results/ \; || true
             echo "Collected reports:"
             ls -R /tmp/test-results
 
       - run:
           name: List test reports for debugging
           command: ls -R /tmp/test-results
-      
+
       - store_test_results:
           path: /tmp/test-results
 
-      # Store artifacts
+      # Store artifacts for test results
       - store_artifacts:
           path: /tmp/test-results  # Store the collected test results
           destination: test-results # Optional destination name in CircleCI
-      
-      # Uncomment the following line if you want to store additional artifacts
-      # - store_artifacts:
-      #     path: /tmp/artifacts
-      #     destination: additional-artifacts  # Optional destination name in CircleCI
 
+      # Collect Code Coverage Reports
       - run:
           name: Collect Code Coverage Reports
           command: |
@@ -52,13 +54,12 @@ jobs:
             find . -type d -name "jacoco" -exec cp -r {} /tmp/code-coverage/ \; || true
             echo "Collected code coverage reports:"
             ls -R /tmp/code-coverage
-
-      - store_test_results:
+            
+      - store_coverage_results:
           path: /tmp/code-coverage
 
-      # Store artifacts
       - store_artifacts:
-          path: /tmp/code-coverage  # Store the collected test results
+          path: /tmp/code-coverage  # Store the collected code coverage reports
           destination: code-coverage # Optional destination name in CircleCI
 
       - save_cache:
@@ -73,13 +74,14 @@ jobs:
     steps:
       # Replace this with steps to deploy to users
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Deploy
+          command: '# e.g. ./deploy.sh'
 
 workflows:
   build-and-test:
     jobs:
       - test-java
-    # - deploy:
-    #     requires:
-    #       - test-java
+      # Uncomment to enable deployment after testing
+      # - deploy:
+      #     requires:
+      #       - test-java
