@@ -44,6 +44,23 @@ jobs:
       #     path: /tmp/artifacts
       #     destination: additional-artifacts  # Optional destination name in CircleCI
 
+      - run:
+          name: Collect Code Coverage Reports
+          command: |
+            mkdir -p /tmp/code-coverage
+            echo "Finding code coverage reports..."
+            find . -type d -name "jacoco" -exec cp -r {} /tmp/code-coverage/ \; || true
+            echo "Collected code coverage reports:"
+            ls -R /tmp/code-coverage
+
+      - store_test_results:
+          path: /tmp/code-coverage
+
+      # Store artifacts
+      - store_artifacts:
+          path: /tmp/code-coverage  # Store the collected test results
+          destination: code-coverage # Optional destination name in CircleCI
+
       - save_cache:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
