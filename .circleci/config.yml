@@ -17,7 +17,7 @@ jobs:
       - run:
           command: mvn verify
 
-#added extra steps for multimodule 
+      # Collect surefire reports for multi-module project
       - run:
           name: Collect surefire reports
           command: |
@@ -26,18 +26,29 @@ jobs:
             find . -type d -name surefire-reports -exec cp -r {} /tmp/test-results/ \;
             echo "Collected reports:"
             ls -R /tmp/test-results
+
       - run:
           name: List test reports for debugging
           command: ls -R /tmp/test-results
+      
       - store_test_results:
           path: /tmp/test-results
 
-
+      # Store artifacts
+      - store_artifacts:
+          path: /tmp/test-results  # Store the collected test results
+          destination: test-results # Optional destination name in CircleCI
+      
+      # Uncomment the following line if you want to store additional artifacts
+      # - store_artifacts:
+      #     path: /tmp/artifacts
+      #     destination: additional-artifacts  # Optional destination name in CircleCI
 
       - save_cache:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
             - ~/.m2/repository
+
   deploy:
     # This is an example deploy job, not actually used by the workflow
     docker:
@@ -47,6 +58,7 @@ jobs:
       - run:
           name: deploy
           command: '#e.g. ./deploy.sh'
+
 workflows:
   build-and-test:
     jobs:
