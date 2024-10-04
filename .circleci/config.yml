@@ -17,7 +17,14 @@ jobs:
       - run:
           command: mvn verify
       - store_test_results:
-          path: **/target/surefire-reports
+         # path: **/target/surefire-reports
+         path: /tmp/test-results
+      - run:
+          name: Collect surefire reports
+          command: |
+            mkdir -p /tmp/test-results
+            find . -type d -name surefire-reports -exec cp -r {} /tmp/test-results/ \;
+
       - save_cache:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
