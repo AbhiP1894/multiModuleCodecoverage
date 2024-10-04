@@ -23,27 +23,27 @@ jobs:
           name: Run Tests
           command: mvn verify
 
-      # Collect surefire reports for multi-module project
-      - run:
-          name: Collect surefire reports
-          command: |
-            mkdir -p /tmp/test-results
-            echo "Finding surefire reports..."
-            find . -type d -name surefire-reports -exec cp -r {} /tmp/test-results/ \; || true
-            echo "Collected reports:"
-            ls -R /tmp/test-results
+      # # Collect surefire reports for multi-module project
+      # - run:
+      #     name: Collect surefire reports
+      #     command: |
+      #       mkdir -p /tmp/test-results
+      #       echo "Finding surefire reports..."
+      #       find . -type d -name surefire-reports -exec cp -r {} /tmp/test-results/ \; || true
+      #       echo "Collected reports:"
+      #       ls -R /tmp/test-results
 
-      - run:
-          name: List test reports for debugging
-          command: ls -R /tmp/test-results
+      # - run:
+      #     name: List test reports for debugging
+      #     command: ls -R /tmp/test-results
 
-      - store_test_results:
-          path: /tmp/test-results
+      # - store_test_results:
+      #     path: /tmp/test-results
 
-      # Store artifacts for test results
-      - store_artifacts:
-          path: /tmp/test-results  # Store the collected test results
-          destination: test-results # Optional destination name in CircleCI
+      # # Store artifacts for test results
+      # - store_artifacts:
+      #     path: /tmp/test-results  # Store the collected test results
+      #     destination: test-results # Optional destination name in CircleCI
 
       # Collect Code Coverage Reports
       - run:
