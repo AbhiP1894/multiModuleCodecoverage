@@ -3,7 +3,6 @@
 version: 2.1
 
 jobs:
-
  build:
     docker:
       - image: cimg/base:current
@@ -87,8 +86,8 @@ jobs:
 workflows:
   build-and-test:
     jobs:
-      - test-java
       - build
+      - test-java
       # Uncomment to enable deployment after testing
       # - deploy:
       #     requires:
