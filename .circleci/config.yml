@@ -8,7 +8,7 @@ jobs:
     # docker:
     #   - image: cimg/openjdk:17.0
     machine: true
-    resource_class: team_1/space
+    resource_class: team_1/aws
     steps:
       - checkout
       
